@@ -35,14 +35,14 @@ interface FeaturedCollectionProps {
 }
 
 const FeaturedCollection: React.FC<FeaturedCollectionProps> = ({ onNavigateProduct }) => {
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
 
   const handleAddToCart = (e: React.MouseEvent, slug: string) => {
     e.stopPropagation();
     const productData = getProductBySlug(slug);
     if (productData) {
       // Transform Product to CartItem
-      addToCart({
+      addItem({
         id: productData.id.toString(), // Convert number to string
         name: productData.title,      // Map title to name
         price: parseFloat(productData.price.replace(/[^0-9.]/g, '')), // Parse "£575" to 575
