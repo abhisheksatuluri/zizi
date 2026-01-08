@@ -13,7 +13,7 @@ interface ProductDetailPageProps {
 
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack, onNavigate }) => {
     // Cart Context
-    const { addToCart } = useCart();
+    const { addItem } = useCart();
 
     // Parallax & Scroll Hooks
     const containerRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,16 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack, 
     const storyOpacity = useTransform(smoothProgress, [0.3, 0.5], [1, 0]);
 
     const handleAddToCart = () => {
-        addToCart(product);
+        // Parse "£575" -> 575
+        const priceNumber = parseInt(product.price.replace(/[^0-9]/g, ''), 10);
+
+        addItem({
+            id: product.id.toString(),
+            name: product.title,
+            price: isNaN(priceNumber) ? 0 : priceNumber,
+            image: product.images[0],
+            quantity: 1
+        });
         onNavigate('cart');
     };
 

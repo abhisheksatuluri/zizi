@@ -4,7 +4,29 @@ import { Minus, Plus, X, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const CartPage: React.FC = () => {
-    const { items, removeFromCart, updateQuantity, subtotal } = useCart();
+    const { items, removeItem, updateQuantity, subtotal } = useCart();
+    const [isCheckingOut, setIsCheckingOut] = React.useState(false);
+
+    const handleCheckout = async () => {
+        setIsCheckingOut(true);
+        try {
+            const response = await fetch('/api/checkout/session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items }),
+            });
+            const data = await response.json();
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                console.error('Checkout error:', data.error);
+                setIsCheckingOut(false);
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            setIsCheckingOut(false);
+        }
+    };
 
     if (items.length === 0) {
         return (
@@ -43,8 +65,8 @@ const CartPage: React.FC = () => {
                                 {/* Image */}
                                 <div className="w-full md:w-48 aspect-[4/5] bg-gray-100 overflow-hidden relative">
                                     <img
-                                        src={item.images[0]}
-                                        alt={item.title}
+                                        src={item.image}
+                                        alt={item.name}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
                                 </div>
@@ -52,16 +74,16 @@ const CartPage: React.FC = () => {
                                 {/* Details */}
                                 <div className="flex-1 flex flex-col gap-2">
                                     <div className="flex justify-between items-start">
-                                        <h3 className="text-2xl font-serif">{item.title}</h3>
+                                        <h3 className="text-2xl font-serif">{item.name}</h3>
                                         <button
-                                            onClick={() => removeFromCart(item.id)}
+                                            onClick={() => removeItem(item.id)}
                                             className="text-gray-300 hover:text-red-500 transition-colors"
                                         >
                                             <X size={20} strokeWidth={1} />
                                         </button>
                                     </div>
-                                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400">{item.category}</p>
-                                    <p className="font-serif italic text-lg text-gray-500 mt-2">{item.price}</p>
+                                    {/* Category removed as per strict schema requirements */}
+                                    <p className="font-serif italic text-lg text-gray-500 mt-2">£{item.price.toLocaleString()}</p>
                                 </div>
 
                                 {/* Quantity */}
@@ -106,9 +128,15 @@ const CartPage: React.FC = () => {
                                 <span className="text-3xl font-serif">£{subtotal.toLocaleString()}</span>
                             </div>
 
-                            <button className="w-full bg-black text-white py-6 flex items-center justify-center gap-4 group hover:bg-gray-900 transition-all duration-500">
-                                <span className="text-xs font-bold uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all">Proceed to Checkout</span>
-                                <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                            <button
+                                onClick={handleCheckout}
+                                disabled={isCheckingOut}
+                                className="w-full bg-black text-white py-6 flex items-center justify-center gap-4 group hover:bg-gray-900 transition-all duration-500 disabled:opacity-70 disabled:cursor-not-allowed"
+                            >
+                                <span className="text-xs font-bold uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all">
+                                    {isCheckingOut ? 'Processing...' : 'Proceed to Checkout'}
+                                </span>
+                                {!isCheckingOut && <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />}
                             </button>
 
                             <p className="text-[10px] text-gray-400 text-center uppercase tracking-widest mt-6">

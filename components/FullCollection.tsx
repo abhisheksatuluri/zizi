@@ -100,7 +100,7 @@ const Curtain: React.FC<CurtainProps> = ({ children, zIndex, progress, range, cl
         filter: useTransform(brightness, b => `brightness(${b})`),
         zIndex
       }}
-      className={`sticky top-0 h-screen w-full overflow-hidden flex flex-col ${className}`}
+      className={`sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col ${className}`}
     >
       {children}
     </motion.div>
@@ -109,7 +109,7 @@ const Curtain: React.FC<CurtainProps> = ({ children, zIndex, progress, range, cl
 
 const FullCollection: React.FC<FullCollectionProps> = ({ onNavigateProduct }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
   const { scrollYProgress } = useScroll({ target: containerRef });
   const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100 });
 
@@ -121,7 +121,16 @@ const FullCollection: React.FC<FullCollectionProps> = ({ onNavigateProduct }) =>
     e.stopPropagation();
     const productData = getProductBySlug(slug);
     if (productData) {
-      addToCart(productData);
+      // Parse price (remove £ and convert to number)
+      const priceNumber = parseInt(productData.price.replace(/[^0-9]/g, ''), 10);
+
+      addItem({
+        id: productData.id.toString(),
+        name: productData.title,
+        price: priceNumber,
+        image: productData.images[0],
+        quantity: 1
+      });
     }
   };
 
@@ -218,25 +227,26 @@ const FullCollection: React.FC<FullCollectionProps> = ({ onNavigateProduct }) =>
             </div>
 
             {/* Content Layout */}
-            <div className={`relative z-10 w-full h-full flex flex-col md:flex-row p-8 md:p-16 lg:p-24 ${isRightAligned ? 'md:justify-end' : 'md:justify-start'} justify-start`}>
+            <div className={`relative z-10 w-full min-h-[100dvh] flex flex-col md:flex-row p-6 md:p-12 lg:p-16 ${isRightAligned ? 'md:justify-end' : 'md:justify-start'} justify-center`}>
 
               {/* Text Container */}
-              <div className="md:w-1/3 flex flex-col justify-start md:justify-center mt-12 md:mt-0">
+              <div className="md:w-1/3 flex flex-col justify-center mt-20 md:mt-0">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="max-w-lg"
                 >
-                  <h2 className={`text-5xl md:text-7xl lg:text-8xl font-serif mb-4 leading-[0.9] ${textColorClass}`}>
+                  {/* Reduced text-8xl to text-7xl to prevent overflow on smaller laptops */}
+                  <h2 className={`text-5xl md:text-6xl lg:text-7xl font-serif mb-4 leading-[0.9] ${textColorClass}`}>
                     {product.title}
                   </h2>
 
-                  <p className={`text-2xl md:text-3xl font-serif italic mb-6 ${textColorClass} opacity-80`}>
+                  <p className={`text-2xl md:text-3xl font-serif italic mb-4 ${textColorClass} opacity-80`}>
                     {product.price}
                   </p>
 
-                  <p className={`text-sm md:text-base font-sans leading-relaxed mb-8 max-w-md ${textColorClass} opacity-70`}>
+                  <p className={`text-sm md:text-base font-sans leading-relaxed mb-6 max-w-md ${textColorClass} opacity-70`}>
                     {description}
                   </p>
 

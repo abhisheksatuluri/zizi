@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Heart, ShoppingBag, User, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '../context/CartContext';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 interface NavbarProps {
   theme: 'dark' | 'light';
@@ -11,6 +13,8 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ theme, onNavigate, currentView, isLogoDocked }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { items } = useCart();
+  const { data: session } = useSession();
 
   // Dynamic color classes based on theme
   const textColor = theme === 'dark' ? 'text-white' : 'text-black';
@@ -87,14 +91,38 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onNavigate, currentView, isLogoD
           <button className={`${mutedColor} ${hoverColor} transition-colors`}>
             <Heart size={20} strokeWidth={1.5} />
           </button>
+          <div className="relative">
+            <button
+              onClick={() => handleLinkClick('cart')}
+              className={`${mutedColor} ${hoverColor} transition-colors`}
+            >
+              <ShoppingBag size={20} strokeWidth={1.5} />
+            </button>
+            <AnimatePresence>
+              {items.reduce((acc, item) => acc + item.quantity, 0) > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  key={items.reduce((acc, item) => acc + item.quantity, 0)} // Trigger animation on count change
+                  className="absolute -top-2 -right-2 bg-red-600 text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                  style={{ boxShadow: '0 0 8px rgba(220, 38, 38, 0.6)' }}
+                >
+                  {items.reduce((acc, item) => acc + item.quantity, 0)}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
           <button
-            onClick={() => handleLinkClick('cart')}
-            className={`${mutedColor} ${hoverColor} transition-colors`}
+            onClick={() => session ? signOut() : signIn()}
+            className={`${mutedColor} ${hoverColor} transition-colors relative`}
+            title={session ? `Signed in as ${session.user?.name || session.user?.email}` : "Sign In"}
           >
-            <ShoppingBag size={20} strokeWidth={1.5} />
-          </button>
-          <button className={`${mutedColor} ${hoverColor} transition-colors`}>
-            <User size={20} strokeWidth={1.5} />
+            {session?.user?.image ? (
+              <img src={session.user.image} alt="User" className="w-5 h-5 rounded-full border border-black/10" />
+            ) : (
+              <User size={20} strokeWidth={1.5} className={session ? "fill-current" : ""} />
+            )}
           </button>
         </div>
 
