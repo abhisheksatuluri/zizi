@@ -26,7 +26,7 @@ const products = [
     category: "Featured Sculpture",
     price: "£575",
     image: "/zizi-webp/selected-lv-aurele.webp",
-    slug: "lv-aurele-gold"
+    slug: "lv-aurele"
   }
 ];
 
@@ -41,7 +41,14 @@ const FeaturedCollection: React.FC<FeaturedCollectionProps> = ({ onNavigateProdu
     e.stopPropagation();
     const productData = getProductBySlug(slug);
     if (productData) {
-      addToCart(productData);
+      // Transform Product to CartItem
+      addToCart({
+        id: productData.id.toString(), // Convert number to string
+        name: productData.title,      // Map title to name
+        price: parseFloat(productData.price.replace(/[^0-9.]/g, '')), // Parse "£575" to 575
+        image: productData.images[0], // Use first image
+        quantity: 1
+      });
     }
   };
 

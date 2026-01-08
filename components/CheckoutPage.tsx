@@ -30,11 +30,11 @@ const CheckoutPage: React.FC<CheckoutProps> = ({ onNavigate }) => {
                     {/* Order Summary */}
                     <div className="space-y-12">
                         <div>
-                            <h2 className="text-xl font-serif mb-8 border-b border-black/10 pb-4">Acquisition Summary</h2>
+                            <h2 className="text-xl font-serif mb-8 border-b border-black/10 pb-4">Review</h2>
                             <div className="space-y-8">
                                 {items.map((item) => (
                                     <div key={item.id} className="flex gap-6">
-                                        <div className="w-20 aspect-[4/5] bg-gray-100 overflow-hidden shrink-0">
+                                        <div className="w-20 aspect-[4/5] overflow-hidden shrink-0">
                                             <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                                         </div>
                                         <div className="flex flex-col justify-between py-1">
@@ -68,15 +68,15 @@ const CheckoutPage: React.FC<CheckoutProps> = ({ onNavigate }) => {
                     {/* Payment Action */}
                     <div className="h-fit space-y-8">
                         <div>
-                            <h2 className="text-xl font-serif mb-8 border-b border-black/10 pb-4">Payment</h2>
+                            <h2 className="text-xl font-serif mb-8 border-b border-black/10 pb-4">Complete Acquisition</h2>
                             <p className="font-serif text-lg text-gray-600 mb-8 italic">
-                                Please confirm your details to finalize this acquisition. The transaction is encrypted and secure.
+                                Please confirm your details below. This transaction is encrypted and secure.
                             </p>
 
                             <button
                                 onClick={handlePay}
                                 disabled={isProcessing}
-                                className="w-full bg-black text-white py-6 flex items-center justify-center gap-4 group hover:bg-gray-900 transition-all duration-500 disabled:opacity-70 disabled:cursor-not-allowed"
+                                className="w-full bg-black text-white py-5 flex items-center justify-center gap-4 group hover:bg-gray-900 transition-all duration-500 disabled:opacity-70 disabled:cursor-not-allowed"
                             >
                                 <span className="text-xs font-bold uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all">
                                     {isProcessing ? 'Processing...' : 'Complete Purchase'}

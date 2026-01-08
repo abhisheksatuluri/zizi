@@ -126,8 +126,25 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onNavigate, currentView, isLogoD
           </button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden z-[190] ml-auto">
+        {/* Mobile Menu Button & Cart Indicator */}
+        <div className="md:hidden z-[190] ml-auto flex items-center space-x-4">
+          <AnimatePresence>
+            {items.reduce((acc, item) => acc + item.quantity, 0) > 0 && !isMobileMenuOpen && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                onClick={() => handleLinkClick('cart')}
+                className={`relative ${textColor} p-2`}
+              >
+                <ShoppingBag size={20} strokeWidth={1.5} />
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-bold w-3 h-3 flex items-center justify-center rounded-full">
+                  {items.reduce((acc, item) => acc + item.quantity, 0)}
+                </span>
+              </motion.button>
+            )}
+          </AnimatePresence>
+
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`${isMobileMenuOpen ? 'text-white' : textColor} p-4 -mr-2 rounded-full transition-colors duration-300 relative`}

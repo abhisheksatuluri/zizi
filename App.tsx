@@ -214,14 +214,14 @@ export default function App() {
               ) : currentView === 'cart' ? (
                 <Suspense fallback={<PageLoader />}><CartPage onNavigate={navigateTo} /></Suspense>
               ) : currentView === 'thank-you' ? (
-                <Suspense fallback={<PageLoader />}><ThankYouPage /></Suspense>
+                <Suspense fallback={<PageLoader />}><ThankYouPage onNavigate={navigateTo} /></Suspense>
               ) : currentView === 'checkout' ? (
                 <Suspense fallback={<PageLoader />}><CheckoutPage onNavigate={navigateTo} /></Suspense>
               ) : currentView === 'product' && currentProduct ? (
                 <Suspense fallback={<PageLoader />}>
                   <ProductDetailPage
                     product={currentProduct}
-                    onBack={() => navigateTo('home')}
+                    onBack={() => navigateTo('collection')}
                     onNavigate={navigateTo}
                   />
                 </Suspense>
