@@ -29,14 +29,29 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [items, setItems] = useState<CartItem[]>([]);
 
-    // 1. Hydrate from localStorage on mount
+    // 1. Hydrate from localStorage on mount with Sanitization
     useEffect(() => {
         try {
             const storedCart = localStorage.getItem('zizi_cart');
             if (storedCart) {
                 const parsedCart = JSON.parse(storedCart);
                 if (Array.isArray(parsedCart)) {
-                    setItems(parsedCart);
+                    // MIGRATION: Ensure all items conform to new schema (Number price)
+                    const sanitizedItems = parsedCart.map(item => {
+                        let price = item.price;
+                        // Fix string prices from legacy data
+                        if (typeof price === 'string') {
+                            price = parseFloat(price.replace(/[^0-9.]/g, ''));
+                        }
+                        return {
+                            ...item,
+                            price: isNaN(price) ? 0 : price, // Fallback to 0 if NaN
+                            // Ensure image is valid string
+                            image: typeof item.image === 'string' ? item.image : ''
+                        };
+                    }).filter(item => item.id && item.name && item.price > 0); // Remove invalid items
+
+                    setItems(sanitizedItems);
                 }
             }
         } catch (error) {
