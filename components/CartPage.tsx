@@ -3,29 +3,16 @@ import { useCart } from '../context/CartContext';
 import { Minus, Plus, X, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const CartPage: React.FC = () => {
+interface CartPageProps {
+    onNavigate: (view: any) => void;
+}
+
+const CartPage: React.FC<CartPageProps> = ({ onNavigate }) => {
     const { items, removeItem, updateQuantity, subtotal } = useCart();
     const [isCheckingOut, setIsCheckingOut] = React.useState(false);
 
-    const handleCheckout = async () => {
-        setIsCheckingOut(true);
-        try {
-            const response = await fetch('/api/checkout/session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items }),
-            });
-            const data = await response.json();
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                console.error('Checkout error:', data.error);
-                setIsCheckingOut(false);
-            }
-        } catch (error) {
-            console.error('Checkout error:', error);
-            setIsCheckingOut(false);
-        }
+    const handleCheckout = () => {
+        onNavigate('checkout');
     };
 
     if (items.length === 0) {

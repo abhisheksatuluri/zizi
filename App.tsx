@@ -17,7 +17,8 @@ const Inspiration = lazy(() => import('./components/Inspiration'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
 const ProductDetailPage = lazy(() => import('./components/ProductDetailPage'));
 const CartPage = lazy(() => import('./components/CartPage'));
-const SuccessPage = lazy(() => import('./components/SuccessPage'));
+const ThankYouPage = lazy(() => import('./components/ThankYouPage'));
+const CheckoutPage = lazy(() => import('./components/CheckoutPage'));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -30,7 +31,7 @@ const PageLoader = () => (
 );
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'collection' | 'inspiration' | 'about' | 'product' | 'cart' | 'success'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'collection' | 'inspiration' | 'about' | 'product' | 'cart' | 'thank-you' | 'checkout'>('home');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
@@ -71,7 +72,8 @@ export default function App() {
       }
       if (path === '/collection') { setCurrentView('collection'); return; }
       if (path === '/cart') { setCurrentView('cart'); return; }
-      if (path === '/checkout/success') { setCurrentView('success'); return; }
+      if (path === '/checkout') { setCurrentView('checkout'); return; }
+      if (path === '/checkout/thank-you') { setCurrentView('thank-you'); return; }
       if (path === '/') setCurrentView('home');
     };
     handleLocationChange();
@@ -81,7 +83,7 @@ export default function App() {
 
   // Section and Theme Detection
   useEffect(() => {
-    if (['collection', 'about', 'product', 'cart', 'success'].includes(currentView)) {
+    if (['collection', 'about', 'product', 'cart', 'thank-you', 'checkout'].includes(currentView)) {
       setTheme('light');
       return;
     }
@@ -108,7 +110,7 @@ export default function App() {
     return () => observer.disconnect();
   }, [currentView]);
 
-  const navigateTo = (view: 'home' | 'collection' | 'inspiration' | 'about' | 'cart') => {
+  const navigateTo = (view: 'home' | 'collection' | 'inspiration' | 'about' | 'cart' | 'checkout' | 'thank-you') => {
     window.history.pushState({}, '', view === 'home' ? '/' : `/${view}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentView(view);
@@ -210,9 +212,11 @@ export default function App() {
               ) : currentView === 'about' ? (
                 <Suspense fallback={<PageLoader />}><AboutPage /></Suspense>
               ) : currentView === 'cart' ? (
-                <Suspense fallback={<PageLoader />}><CartPage /></Suspense>
-              ) : currentView === 'success' ? (
-                <Suspense fallback={<PageLoader />}><SuccessPage /></Suspense>
+                <Suspense fallback={<PageLoader />}><CartPage onNavigate={navigateTo} /></Suspense>
+              ) : currentView === 'thank-you' ? (
+                <Suspense fallback={<PageLoader />}><ThankYouPage /></Suspense>
+              ) : currentView === 'checkout' ? (
+                <Suspense fallback={<PageLoader />}><CheckoutPage onNavigate={navigateTo} /></Suspense>
               ) : currentView === 'product' && currentProduct ? (
                 <Suspense fallback={<PageLoader />}>
                   <ProductDetailPage
