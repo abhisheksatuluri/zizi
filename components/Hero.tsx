@@ -30,8 +30,8 @@ const Hero: React.FC<HeroProps> = ({ onNavigateProduct }) => {
       </div>
 
       {/* Hero Content - Award Winning Placement */}
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-12 md:pb-20 px-6">
-        <div className="max-w-2xl mx-auto text-center space-y-8 animate-fade-in-up">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-6 md:pb-10 px-6">
+        <div className="max-w-2xl mx-auto text-center space-y-4 animate-fade-in-up">
           {/* Metadata */}
           <div className="space-y-2">
             <span className="text-white/60 text-[10px] tracking-[0.5em] uppercase font-bold">The Archive</span>
