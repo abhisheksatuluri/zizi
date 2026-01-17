@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Utilities */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::selection {
+  background-color: #000;
+  color: #fff;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fcfcfc;
+  overflow-x: hidden;
+  width: 100%;
+  min-width: 100%;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Fix for mobile viewport width issues */
+html,
+body,
+#root {
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+/* Scroll Animation Custom Properties - Cinematic Slow */
+:root {
+  --scroll-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --reveal-duration: 1.2s;
+  --parallax-speed: 0.15;
+}
+
+/* Card Scroll Section Styles */
+.card-section {
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+/* Parallax Reveal Utilities */
+.parallax-reveal {
+  will-change: transform, opacity;
+}
+
+/* Smooth transition utilities */
+.transition-luxury {
+  transition: all var(--reveal-duration) var(--scroll-ease);
+}
+
+/* Custom Typography - Ornate & Modern mix */
+h1,
+h2,
+h3,
+.font-serif {
+  letter-spacing: -0.02em;
+}
+
+/* Award-winning Grain Texture */
+.grain::before {
+  content: "";
+  position: fixed;
+  top: -150%;
+  left: -150%;
+  z-index: 9999;
+  width: 300%;
+  height: 300%;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.04;
+  pointer-events: none;
+  animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+
+  0%,
+  100% {
+    transform: translate(0, 0)
+  }
+
+  10% {
+    transform: translate(-5%, -10%)
+  }
+
+  20% {
+    transform: translate(-15%, 5%)
+  }
+
+  30% {
+    transform: translate(7%, -25%)
+  }
+
+  40% {
+    transform: translate(-5%, 25%)
+  }
+
+  50% {
+    transform: translate(-15%, 10%)
+  }
+
+  60% {
+    transform: translate(15%, 0)
+  }
+
+  70% {
+    transform: translate(0, 15%)
+  }
+
+  80% {
+    transform: translate(3%, 35%)
+  }
+
+  90% {
+    transform: translate(-10%, 10%)
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes slowZoom {
+  from {
+    transform: scale(1.02);
+  }
+
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes scrollLine {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.animate-slow-zoom {
+  animation: slowZoom 20s linear infinite alternate;
+}
+
+.animate-scroll-line {
+  animation: scrollLine 2s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+
+.text-balance {
+  text-wrap: balance;
+}
