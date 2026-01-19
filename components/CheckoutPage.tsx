@@ -25,13 +25,46 @@ const getCartImage = (id: string, fallback: string) => {
 const CheckoutPage: React.FC<CheckoutProps> = ({ onNavigate }) => {
     const { items, subtotal } = useCart();
     const [isProcessing, setIsProcessing] = useState(false);
+    const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
-    // Mock processing delay
-    const handlePay = () => {
+    // Real Stripe Checkout
+    const handlePay = async () => {
         setIsProcessing(true);
-        setTimeout(() => {
-            onNavigate('thank-you');
-        }, 2000);
+        setCheckoutError(null);
+
+        try {
+            // Map cart items to Stripe format
+            const checkoutItems = items.map(item => ({
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                image: item.image,
+            }));
+
+            // Call our API route
+            const response = await fetch('/api/checkout/session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: checkoutItems }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to create checkout session');
+            }
+
+            // Redirect to Stripe Checkout
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                throw new Error('No checkout URL returned');
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            setCheckoutError(error instanceof Error ? error.message : 'Checkout failed. Please try again.');
+            setIsProcessing(false);
+        }
     };
 
     return (
@@ -101,6 +134,12 @@ const CheckoutPage: React.FC<CheckoutProps> = ({ onNavigate }) => {
                                     {isProcessing ? 'Processing...' : 'Complete Purchase'}
                                 </span>
                             </button>
+
+                            {checkoutError && (
+                                <p className="text-xs text-center text-red-500 mt-4">
+                                    {checkoutError}
+                                </p>
+                            )}
 
                             <p className="text-[10px] text-center uppercase tracking-widest text-gray-400 mt-6">
                                 By completing this purchase, you agree to our Terms of Service.
