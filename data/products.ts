@@ -82,7 +82,7 @@ export const products: Product[] = [
       <p>The ceramic shell is kiln-fired to achieve a glass-like hardness, providing a perfect canvas for the intricate decal work. The metallic elements are polished to a mirror shine, reflecting the environment and grounding the piece with a sense of substantial luxury.</p>
     `,
         images: [
-            '/zizi-webp/fendi-vittoria.webp',
+            '/fendi-vittoria.jpeg',
             '/zizi-webp/fendi-vittoria(1).webp',
             '/zizi-webp/fendi.webp',
             '/zizi-webp/selected-fendi-vittoria.webp',
