@@ -120,6 +120,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, onBack, 
                         src={product.images[0]}
                         alt={product.title}
                         className="absolute inset-0 w-full h-full object-cover opacity-80"
+                        style={{ objectPosition: product.imagePosition || 'center' }}
                         loading="eager"
                         initial={{ scale: 1.1 }}
                         animate={{ scale: 1 }}

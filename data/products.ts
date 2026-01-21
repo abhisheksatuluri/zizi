@@ -22,6 +22,7 @@ export interface Product {
         title: string;
         description: string;
     };
+    imagePosition?: string;
 }
 
 export const products: Product[] = [
@@ -107,7 +108,8 @@ export const products: Product[] = [
         seo: {
             title: 'Fendi Vittoria Turtle Sculpture | Luxury Green Monogram Art | ZIZI',
             description: 'Discover Vittoria by ZIZI. A luxury turtle sculpture featuring a verdant green geometric monogram. Modern Italian-inspired decor for the collector.'
-        }
+        },
+        imagePosition: 'center bottom'
     },
     {
         id: 3,
