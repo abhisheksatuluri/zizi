@@ -9,10 +9,9 @@ interface NavbarProps {
   theme: 'dark' | 'light';
   onNavigate: (view: 'home' | 'collection' | 'about' | 'cart') => void;
   currentView: 'home' | 'collection' | 'about' | 'cart';
-  isLogoDocked?: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ theme, onNavigate, currentView, isLogoDocked }) => {
+const Navbar: React.FC<NavbarProps> = ({ theme, onNavigate, currentView }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { items } = useCart();

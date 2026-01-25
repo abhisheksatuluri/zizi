@@ -7,6 +7,7 @@ import InstagramArchive from './components/InstagramArchive';
 import { getProductBySlug } from './data/products';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import AnimatedLogo from './components/AnimatedLogo';
 
 import ParallaxReveal from './components/ParallaxReveal';
 import CardScrollSection from './components/CardScrollSection';
@@ -35,29 +36,7 @@ const PageLoader = () => (
 export default function App() {
   const [currentView, setCurrentView] = useState<'home' | 'collection' | 'about' | 'product' | 'cart' | 'thank-you' | 'checkout' | 'account' | 'account-orders' | 'account-details'>('home');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Track scroll for logo animation
-  useEffect(() => {
-    const handleScroll = () => {
-      // slower docking on mobile for better experience
-      const threshold = isMobile ? window.innerHeight * 0.6 : window.innerHeight * 0.4;
-      const progress = Math.min(window.scrollY / threshold, 1);
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMobile]);
 
   // Handle URL routing
   useEffect(() => {
@@ -128,63 +107,17 @@ export default function App() {
     window.scrollTo(0, 0);
   };
 
-  const isDocked = scrollProgress === 1 || currentView !== 'home';
   const currentProduct = currentProductSlug ? getProductBySlug(currentProductSlug) : null;
-  const [dockedScale, setDockedScale] = useState(0.12);
-
-  useEffect(() => {
-    const calculateScale = () => {
-      const width = window.innerWidth;
-      const baseSize = width * 0.16;
-      const targetSize = width < 768 ? 28 : 40; // Smaller target on mobile
-      const scale = Math.min(Math.max(targetSize / baseSize, 0.08), 1);
-      setDockedScale(scale);
-    };
-    calculateScale();
-    window.addEventListener('resize', calculateScale);
-    return () => window.removeEventListener('resize', calculateScale);
-  }, []);
-
-  // Color logic for logo
-  const getLogoColor = () => {
-    if (currentView !== 'home') return 'black';
-    if (scrollProgress < 0.2) return 'white'; // Keep white longer
-    return theme === 'dark' ? 'white' : 'black';
-  };
-
-  // Calculate Y movement for docking
-  const getLogoTransform = () => {
-    const headerOffset = isMobile ? '2.4rem' : '2.2rem';
-    if (isDocked) return `translateY(calc(-50vh + ${headerOffset})) scale(${dockedScale})`;
-
-    const yMove = `calc(-${scrollProgress * 50}vh + ${scrollProgress * parseFloat(headerOffset)}rem)`;
-    const scaleVal = 1 - (scrollProgress * (1 - dockedScale));
-    return `translateY(${yMove}) scale(${scaleVal})`;
-  };
 
   return (
     <AuthProvider>
       <CartProvider>
         <>
           <div className="grain relative bg-white font-sans selection:bg-[#D4AF37] selection:text-white min-h-screen overflow-x-hidden w-full max-w-full">
-            <Navbar theme={theme} onNavigate={navigateTo} currentView={currentView} isLogoDocked={isDocked} />
+            <Navbar theme={theme} onNavigate={navigateTo} currentView={currentView} />
 
             {/* --- DYNAMIC MONOLITHIC LOGO --- */}
-            <div className="fixed inset-0 z-[170] flex items-center justify-center pointer-events-none">
-              <h1
-                onClick={() => navigateTo('home')}
-                className="font-serif font-bold tracking-tighter leading-none cursor-pointer pointer-events-auto select-none"
-                style={{
-                  transform: getLogoTransform(),
-                  fontSize: '16vw',
-                  color: getLogoColor(),
-                  transition: 'transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease',
-                  textShadow: (currentView === 'home' && scrollProgress < 0.5) ? '0 4px 30px rgba(0,0,0,0.3)' : 'none',
-                }}
-              >
-                ZIZI
-              </h1>
-            </div>
+            <AnimatedLogo currentView={currentView} theme={theme} onNavigate={navigateTo} />
 
             {/* --- VIEW ROUTING --- */}
             {currentView === 'home' ? (
