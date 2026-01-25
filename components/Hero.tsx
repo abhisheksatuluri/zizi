@@ -16,7 +16,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigateProduct }) => {
       {/* Background Image - Immersive Experience */}
       <div className="absolute inset-0 z-0 w-full h-full">
         <picture className="block w-full h-full">
-          <source srcSet="/images/home/hero-mobile.png" media="(max-width: 768px)" />
+          <source srcSet="/images/home/hero-mobile.png?v=2" media="(max-width: 768px)" />
           <img
             src="/zizi-webp/dior-eloise-hero.webp"
             alt="Dior – Éloise"

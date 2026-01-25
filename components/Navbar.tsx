@@ -71,6 +71,18 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onNavigate, currentView, isLogoD
       <nav className={`fixed top-0 left-0 right-0 ${isMobileMenuOpen ? 'z-[180]' : 'z-[160]'} transition-all duration-700 backdrop-blur-md ${bgColor} ${textColor}`}>
         <div className="max-w-[1400px] mx-auto px-4 md:px-12 py-4 md:py-8 flex items-center justify-between relative">
 
+          {/* Mobile Home Link (Left) */}
+          <div className="md:hidden z-[190] flex items-center mr-auto">
+            {currentView !== 'home' && (
+              <button
+                onClick={() => handleLinkClick('home')}
+                className={`${textColor} text-[11px] font-bold uppercase tracking-[0.15em] transition-colors`}
+              >
+                Home
+              </button>
+            )}
+          </div>
+
           {/* Left Links */}
           <div className="hidden md:flex space-x-8 z-20">
             <button
@@ -79,6 +91,14 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onNavigate, currentView, isLogoD
             >
               Collection
             </button>
+            {currentView !== 'home' && (
+              <button
+                onClick={() => handleLinkClick('home')}
+                className={`${mutedColor} ${hoverColor} text-[11px] font-bold uppercase tracking-[0.15em] transition-colors`}
+              >
+                Home
+              </button>
+            )}
             <button
               onClick={() => handleLinkClick('about')}
               className={`${mutedColor} ${hoverColor} text-[11px] font-bold uppercase tracking-[0.15em] transition-colors`}

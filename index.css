@@ -86,6 +86,13 @@ h3,
   animation: grain 8s steps(10) infinite;
 }
 
+@media (max-width: 768px) {
+  .grain::before {
+    display: none;
+    animation: none;
+  }
+}
+
 @keyframes grain {
 
   0%,

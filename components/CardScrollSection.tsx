@@ -26,9 +26,11 @@ const CardScrollSection: React.FC<CardScrollSectionProps> = ({
     });
 
     // Smooth spring for cinematic buttery animations
+    // Reduced physics for mobile to prevent jank
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 60,
-        damping: 25,
+        stiffness: isMobile ? 100 : 60,
+        damping: isMobile ? 30 : 25,
         restDelta: 0.001
     });
 
