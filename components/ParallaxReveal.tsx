@@ -29,12 +29,9 @@ const ParallaxReveal: React.FC<ParallaxRevealProps> = ({
         offset: ['start end', 'end start']
     });
 
-    // Smooth spring physics for cinematic motion
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 50,
-        damping: 25,
-        restDelta: 0.001
-    });
+    // Direct scroll binding for instant response
+    // Removed useSpring to eliminate "lag" feeling
+    const smoothProgress = scrollYProgress;
 
     // Parallax Y offset - elements move slightly as you scroll past
     const parallaxY = useTransform(

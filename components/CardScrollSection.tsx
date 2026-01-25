@@ -25,14 +25,9 @@ const CardScrollSection: React.FC<CardScrollSectionProps> = ({
         offset: ['start end', 'end start']
     });
 
-    // Smooth spring for cinematic buttery animations
-    // Reduced physics for mobile to prevent jank
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: isMobile ? 100 : 60,
-        damping: isMobile ? 30 : 25,
-        restDelta: 0.001
-    });
+    // Direct scroll binding for instant response (1:1 physics)
+    // Removed useSpring to eliminate "lag" feeling
+    const smoothProgress = scrollYProgress;
 
     // Card scale effect - subtle grow as it enters viewport
     const scale = useTransform(
