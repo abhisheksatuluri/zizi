@@ -7,7 +7,7 @@ import InstagramArchive from './components/InstagramArchive';
 import { getProductBySlug } from './data/products';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
-import SmoothScroll from './components/SmoothScroll';
+
 import ParallaxReveal from './components/ParallaxReveal';
 import CardScrollSection from './components/CardScrollSection';
 
@@ -165,7 +165,7 @@ export default function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <SmoothScroll>
+        <>
           <div className="grain relative bg-white font-sans selection:bg-[#D4AF37] selection:text-white min-h-screen overflow-x-hidden w-full max-w-full">
             <Navbar theme={theme} onNavigate={navigateTo} currentView={currentView} isLogoDocked={isDocked} />
 
@@ -253,7 +253,7 @@ export default function App() {
               </div>
             )}
           </div>
-        </SmoothScroll>
+        </>
       </CartProvider>
     </AuthProvider>
   );

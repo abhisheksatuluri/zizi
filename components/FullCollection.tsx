@@ -119,11 +119,14 @@ const FullCollection: React.FC<FullCollectionProps> = ({ onNavigateProduct }) =>
       >
         {/* Hero Background Image */}
         <div className="absolute inset-0 z-0 bg-white">
-          <img
-            src="/images/collections/hero-bg.png"
-            alt="Collection Hero"
-            className="w-full h-full object-cover"
-          />
+          <picture className="block w-full h-full">
+            <source srcSet="/images/collections/hero-bg-mobile.png" media="(max-width: 768px)" />
+            <img
+              src="/images/collections/hero-bg.png"
+              alt="Collection Hero"
+              className="w-full h-full object-cover"
+            />
+          </picture>
 
         </div>
 

@@ -16,7 +16,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigateProduct }) => {
       {/* Background Image - Immersive Experience */}
       <div className="absolute inset-0 z-0 w-full h-full">
         <picture className="block w-full h-full">
-          <source srcSet="/images/home/hero-mobile.jpg" media="(max-width: 768px)" />
+          <source srcSet="/images/home/hero-mobile.png" media="(max-width: 768px)" />
           <img
             src="/zizi-webp/dior-eloise-hero.webp"
             alt="Dior – Éloise"
@@ -30,15 +30,12 @@ const Hero: React.FC<HeroProps> = ({ onNavigateProduct }) => {
       </div>
 
       {/* Hero Content - Award Winning Placement */}
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-6 md:pb-10 px-6">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-24 md:pb-16 px-6">
         <div className="max-w-2xl mx-auto text-center space-y-4 animate-fade-in-up">
           {/* Metadata */}
-          <div className="space-y-2">
-            <span className="text-white/60 text-[10px] tracking-[0.5em] uppercase font-bold">The Archive</span>
-            <h2 className="text-white text-lg md:text-2xl font-serif italic tracking-wide">
-              Dior – Éloise
-            </h2>
-          </div>
+          <h2 className="text-white text-lg md:text-2xl font-serif italic tracking-wide">
+            Dior – Éloise
+          </h2>
 
           {/* CTA */}
           <button

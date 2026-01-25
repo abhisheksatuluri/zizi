@@ -98,7 +98,7 @@ const InstagramArchive: React.FC = () => {
             <div className="max-w-[1600px] w-full mx-auto flex flex-col justify-center">
                 <div className="flex flex-col items-center text-center mb-8 md:mb-16 shrink-0">
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-black mb-4">
-                        From the Archive
+                        Instagram
                     </h2>
                     <a
                         href="https://www.instagram.com/zizi__designs/"
