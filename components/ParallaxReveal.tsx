@@ -78,7 +78,7 @@ const ParallaxReveal: React.FC<ParallaxRevealProps> = ({
                 delay,
                 ease: [0.16, 1, 0.3, 1] // Cinematic ease-out for luxury feel
             }}
-            style={{ y: parallaxY }}
+            style={{ y: parallaxY, willChange: 'transform, opacity' }}
         >
             {children}
         </motion.div>
